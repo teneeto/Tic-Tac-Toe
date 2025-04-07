@@ -3,7 +3,7 @@ import { Text, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 're
 import { router } from 'expo-router';
 
 import Button from '@/components/Button';
-import { COLORS, SPACING } from '@/theme';
+import { SPACING } from '@/theme';
 import { useGameSettings } from '@/context/GameSettingsContext';
 import { GameMode, type Difficulty } from '@/types/game';
 import DifficultySelector from '@/components/DifficultySelector';
@@ -74,33 +74,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
   },
-  subtext: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginVertical: 10,
-  },
-  input: {
-    backgroundColor: COLORS.white,
-    borderWidth: 1,
-    borderColor: COLORS.grey,
-    padding: 10,
-    borderRadius: 6,
-    marginVertical: 8,
-  },
   difficultyWrapper: {
     alignItems: 'center',
     position: 'relative',
-  },
-  unbeatableTag: {
-    backgroundColor: COLORS.danger,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-    marginTop: 4,
-  },
-  unbeatableText: {
-    color: COLORS.white,
-    fontSize: 10,
-    fontWeight: 'bold',
   },
 });
