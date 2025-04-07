@@ -14,7 +14,7 @@ const difficulties: Difficulty[] = [
 ];
 
 export default function StartScreen() {
-  const { setMode, setDifficulty, setPlayerX, setPlayerO } = useGameSettings();
+  const { setMode, setDifficulty, setPlayerX, setPlayerO, setUserFirst } = useGameSettings();
   const [nameX, setNameXInput] = useState('');
   const [nameO, setNameOInput] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>();
@@ -22,6 +22,7 @@ export default function StartScreen() {
   const handleStart = (userFirst: boolean) => {
     setMode(GameMode.Single);
     if (selectedDifficulty) setDifficulty(selectedDifficulty);
+    setUserFirst(userFirst);
     router.push('/game');
   };
 
