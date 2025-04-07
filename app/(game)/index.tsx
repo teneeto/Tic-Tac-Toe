@@ -13,13 +13,8 @@ import { router } from 'expo-router';
 import Button from '@/components/Button';
 import { COLORS, SPACING } from '@/theme';
 import { useGameSettings } from '@/context/GameSettingsContext';
-import { DifficultyLevel, GameMode, type Difficulty } from '@/types/game';
-
-const difficulties: Difficulty[] = [
-  DifficultyLevel.Easy,
-  DifficultyLevel.Medium,
-  DifficultyLevel.Hard,
-];
+import { GameMode, type Difficulty } from '@/types/game';
+import DifficultySelector from '@/components/DifficultySelector';
 
 export default function StartScreen() {
   const { setMode, setDifficulty, setPlayerX, setPlayerO, setUserFirst } = useGameSettings();
@@ -28,8 +23,9 @@ export default function StartScreen() {
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>();
 
   const handleStart = (userFirst: boolean) => {
+    if (!selectedDifficulty) return;
     setMode(GameMode.Single);
-    if (selectedDifficulty) setDifficulty(selectedDifficulty);
+    setDifficulty(selectedDifficulty);
     setUserFirst(userFirst);
     router.push('/game');
   };
@@ -52,22 +48,7 @@ export default function StartScreen() {
 
         <Text style={styles.section}>Single Player vs AI</Text>
 
-        <View style={styles.row}>
-          {difficulties.map((level) => (
-            <View key={level} style={styles.difficultyWrapper}>
-              <Button
-                title={level.toUpperCase()}
-                onPress={() => setSelectedDifficulty(level)}
-                style={selectedDifficulty === level ? styles.selected : undefined}
-              />
-              {level === DifficultyLevel.Hard && (
-                <View style={styles.unbeatableTag}>
-                  <Text style={styles.unbeatableText}>Unbeatable</Text>
-                </View>
-              )}
-            </View>
-          ))}
-        </View>
+        <DifficultySelector selected={selectedDifficulty} onSelect={setSelectedDifficulty} />
 
         {selectedDifficulty && (
           <>
@@ -83,12 +64,14 @@ export default function StartScreen() {
         <TextInput
           placeholder="Player X Name"
           value={nameX}
+          returnKeyType="done"
           onChangeText={setNameXInput}
           style={styles.input}
         />
         <TextInput
           placeholder="Player O Name"
           value={nameO}
+          returnKeyType="done"
           onChangeText={setNameOInput}
           style={styles.input}
         />
