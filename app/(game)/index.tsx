@@ -41,12 +41,18 @@ export default function StartScreen() {
 
       <View style={styles.row}>
         {difficulties.map((level) => (
-          <Button
-            key={level}
-            title={level.toUpperCase()}
-            onPress={() => setSelectedDifficulty(level)}
-            style={selectedDifficulty === level ? styles.selected : undefined}
-          />
+          <View key={level} style={styles.difficultyWrapper}>
+            <Button
+              title={level.toUpperCase()}
+              onPress={() => setSelectedDifficulty(level)}
+              style={selectedDifficulty === level ? styles.selected : undefined}
+            />
+            {level === DifficultyLevel.Hard && (
+              <View style={styles.unbeatableTag}>
+                <Text style={styles.unbeatableText}>Unbeatable</Text>
+              </View>
+            )}
+          </View>
         ))}
       </View>
 
@@ -98,5 +104,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 12,
+  },
+  difficultyWrapper: {
+    alignItems: 'center',
+    position: 'relative',
+  },
+  unbeatableTag: {
+    backgroundColor: COLORS.danger,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    marginTop: 4,
+  },
+  unbeatableText: {
+    color: COLORS.white,
+    fontSize: 10,
+    fontWeight: 'bold',
   },
 });
