@@ -9,6 +9,7 @@ import { GameMode, GameResult, PlayerSymbol, type Player } from '@/types/game';
 import { applyMove, getNextPlayer, isValidMove } from '@/lib/gameEngine';
 import { useGameSettings } from '@/context/GameSettingsContext';
 import GridBoard from '@/components/GridBoard';
+import { useDelayedCallback } from '@/hooks/useDelayedCallback';
 
 export default function GameScreen() {
   const { mode, difficulty, playerX, playerO, gridSize } = useGameSettings();
@@ -21,39 +22,40 @@ export default function GameScreen() {
   );
   const [gameOver, setGameOver] = useState(false);
 
-  useEffect(() => {
-    if (!isMultiplayer && currentPlayer === PlayerSymbol.O && !gameOver) {
-      const delay = setTimeout(() => {
+  useDelayedCallback(
+    () => {
+      if (!isMultiplayer && currentPlayer === PlayerSymbol.O && !gameOver) {
         const move = getAiMove(board, gridSize, difficulty);
         if (move !== -1) {
           setBoard(applyMove(board, move, PlayerSymbol.O));
           setCurrentPlayer(PlayerSymbol.X);
         }
-      }, 600);
-      return () => clearTimeout(delay);
-    }
-  }, [currentPlayer, isMultiplayer, board, difficulty, gameOver, gridSize]);
+      }
+    },
+    600,
+    [currentPlayer, isMultiplayer, board, difficulty, gameOver, gridSize],
+  );
 
-  useEffect(() => {
-    const winner = checkWinner(board, gridSize);
-    if (winner || !board.includes(null)) {
-      setGameOver(true);
+  useDelayedCallback(
+    () => {
+      const winner = checkWinner(board, gridSize);
+      if (winner || !board.includes(null)) {
+        setGameOver(true);
 
-      const outcome =
-        winner === PlayerSymbol.X
-          ? GameResult.Win
-          : winner === PlayerSymbol.O
-            ? GameResult.Lose
-            : GameResult.Tie;
+        const outcome =
+          winner === PlayerSymbol.X
+            ? GameResult.Win
+            : winner === PlayerSymbol.O
+              ? GameResult.Lose
+              : GameResult.Tie;
 
-      setResult(outcome);
-
-      const delay = setTimeout(() => {
+        setResult(outcome);
         router.replace('/result');
-      }, 600);
-      return () => clearTimeout(delay);
-    }
-  }, [board, gridSize, setResult]);
+      }
+    },
+    600,
+    [board, gridSize, setResult],
+  );
 
   const handlePress = (i: number) => {
     if (!isValidMove(board, i) || gameOver) return;
