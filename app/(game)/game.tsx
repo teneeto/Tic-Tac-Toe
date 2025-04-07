@@ -14,7 +14,7 @@ export default function GameScreen() {
   const { mode, difficulty, playerX, playerO } = useGameSettings();
   const isMultiplayer = mode === GameMode.Multi;
 
-  const { userFirst } = useGameSettings();
+  const { userFirst, setResult } = useGameSettings();
   const [board, setBoard] = useState<(Player | null)[]>(Array(9).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState<Player>(
     userFirst ? PlayerSymbol.X : PlayerSymbol.O,
@@ -38,18 +38,19 @@ export default function GameScreen() {
     const winner = checkWinner(board);
     if (winner || !board.includes(null)) {
       setGameOver(true);
+
+      // Set the result before routing
+      const outcome =
+        winner === PlayerSymbol.X
+          ? GameResult.Win
+          : winner === PlayerSymbol.O
+            ? GameResult.Lose
+            : GameResult.Tie;
+
+      setResult(outcome); // ✅ Store in context
+
       setTimeout(() => {
-        router.replace({
-          pathname: '/result',
-          params: {
-            result:
-              winner === PlayerSymbol.X
-                ? GameResult.Win
-                : winner === PlayerSymbol.O
-                  ? GameResult.Lose
-                  : GameResult.Tie,
-          },
-        });
+        router.replace('/result');
       }, 500);
     }
   }, [board]);
