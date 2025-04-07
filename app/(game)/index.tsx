@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import { router } from 'expo-router';
 
 import Button from '@/components/Button';
@@ -34,61 +42,87 @@ export default function StartScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>🎮 Tic Tac Toe</Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={60}
+    >
+      <ScrollView contentContainerStyle={styles.inner} keyboardShouldPersistTaps="handled">
+        <Text style={styles.title}>🎮 Tic Tac Toe</Text>
 
-      <Text style={styles.section}>Single Player vs AI</Text>
+        <Text style={styles.section}>Single Player vs AI</Text>
 
-      <View style={styles.row}>
-        {difficulties.map((level) => (
-          <View key={level} style={styles.difficultyWrapper}>
-            <Button
-              title={level.toUpperCase()}
-              onPress={() => setSelectedDifficulty(level)}
-              style={selectedDifficulty === level ? styles.selected : undefined}
-            />
-            {level === DifficultyLevel.Hard && (
-              <View style={styles.unbeatableTag}>
-                <Text style={styles.unbeatableText}>Unbeatable</Text>
-              </View>
-            )}
-          </View>
-        ))}
-      </View>
+        <View style={styles.row}>
+          {difficulties.map((level) => (
+            <View key={level} style={styles.difficultyWrapper}>
+              <Button
+                title={level.toUpperCase()}
+                onPress={() => setSelectedDifficulty(level)}
+                style={selectedDifficulty === level ? styles.selected : undefined}
+              />
+              {level === DifficultyLevel.Hard && (
+                <View style={styles.unbeatableTag}>
+                  <Text style={styles.unbeatableText}>Unbeatable</Text>
+                </View>
+              )}
+            </View>
+          ))}
+        </View>
 
-      {selectedDifficulty && (
-        <>
-          <Text style={styles.subtext}>Who should play first?</Text>
-          <View style={styles.row}>
-            <Button title="You" onPress={() => handleStart(true)} />
-            <Button title="Computer" onPress={() => handleStart(false)} />
-          </View>
-        </>
-      )}
+        {selectedDifficulty && (
+          <>
+            <Text style={styles.subtext}>Who should play first?</Text>
+            <View style={styles.row}>
+              <Button title="You" onPress={() => handleStart(true)} />
+              <Button title="Computer" onPress={() => handleStart(false)} />
+            </View>
+          </>
+        )}
 
-      <Text style={styles.section}>Multiplayer</Text>
-      <TextInput
-        placeholder="Player X Name"
-        value={nameX}
-        onChangeText={setNameXInput}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Player O Name"
-        value={nameO}
-        onChangeText={setNameOInput}
-        style={styles.input}
-      />
-      <Button title="Start Multiplayer" onPress={startMultiplayer} variant="primary" />
-    </View>
+        <Text style={styles.section}>Multiplayer</Text>
+        <TextInput
+          placeholder="Player X Name"
+          value={nameX}
+          onChangeText={setNameXInput}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Player O Name"
+          value={nameO}
+          onChangeText={setNameOInput}
+          style={styles.input}
+        />
+        <Button title="Start Multiplayer" onPress={startMultiplayer} variant="primary" />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: SPACING.large, justifyContent: 'center' },
-  title: { fontSize: 32, textAlign: 'center', marginBottom: SPACING.large },
-  section: { fontSize: 20, fontWeight: '600', marginTop: 20, marginBottom: 10 },
-  subtext: { fontSize: 16, textAlign: 'center', marginVertical: 10 },
+  container: {
+    flex: 1,
+  },
+  inner: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    padding: SPACING.large,
+  },
+  title: {
+    fontSize: 32,
+    textAlign: 'center',
+    marginBottom: SPACING.large,
+  },
+  section: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  subtext: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginVertical: 10,
+  },
   input: {
     backgroundColor: COLORS.white,
     borderWidth: 1,
