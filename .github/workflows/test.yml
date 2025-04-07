@@ -22,5 +22,10 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
 
-      - name: 🧪 Run Tests
+      - name: 🧪 Generate Coverage
         run: npm run test:once
+
+      - name: 📤 Upload to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
