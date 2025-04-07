@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { DifficultyLevel, GameMode } from '@/types/game';
 import type { Difficulty, GameResult, Mode } from '@/types/game';
+import { DEFAULT_GRID_SIZE } from '@/constants';
 
 interface GameSettingsContextType {
   difficulty: Difficulty;
@@ -9,12 +10,15 @@ interface GameSettingsContextType {
   playerO: string;
   userFirst: boolean;
   result: GameResult | null;
+  gridSize: number;
   setUserFirst: (first: boolean) => void;
   setDifficulty: (d: Difficulty) => void;
   setMode: (m: Mode) => void;
   setPlayerX: (name: string) => void;
   setPlayerO: (name: string) => void;
   setResult: (r: GameResult | null) => void;
+
+  setGridSize: (size: number) => void;
 }
 
 const GameSettingsContext = createContext<GameSettingsContextType | undefined>(undefined);
@@ -26,6 +30,7 @@ export const GameSettingsProvider = ({ children }: { children: ReactNode }) => {
   const [playerO, setPlayerO] = useState<string>('Player O');
   const [userFirst, setUserFirst] = useState(true);
   const [result, setResult] = useState<GameResult | null>(null);
+  const [gridSize, setGridSize] = useState<number>(DEFAULT_GRID_SIZE);
 
   return (
     <GameSettingsContext.Provider
@@ -36,12 +41,14 @@ export const GameSettingsProvider = ({ children }: { children: ReactNode }) => {
         playerO,
         userFirst,
         result,
+        gridSize,
         setResult,
         setUserFirst,
         setDifficulty,
         setMode,
         setPlayerX,
         setPlayerO,
+        setGridSize,
       }}
     >
       {children}
@@ -49,10 +56,11 @@ export const GameSettingsProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useGameSettings = (): GameSettingsContextType => {
+const useGameSettings = (): GameSettingsContextType => {
   const context = useContext(GameSettingsContext);
   if (!context) {
     throw new Error('useGameSettings must be used within a GameSettingsProvider');
   }
   return context;
 };
+export { useGameSettings, GameSettingsContext };

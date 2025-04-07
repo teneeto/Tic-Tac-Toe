@@ -1,33 +1,42 @@
-import { Player, PlayerSymbol } from '@/types/game';
-import { applyMove, getNextPlayer, isValidMove } from '../gameEngine';
+import { getNextPlayer, isValidMove, applyMove } from '../gameEngine';
+import { PlayerSymbol } from '@/types/game';
 
-describe('gameEngine logic', () => {
-  it('applies a move correctly', () => {
-    const board = Array(9).fill(null);
-    const newBoard = applyMove(board, 0, PlayerSymbol.X);
-    expect(newBoard[0]).toBe(PlayerSymbol.X);
-    expect(board[0]).toBeNull();
+describe('gameEngine', () => {
+  describe('getNextPlayer', () => {
+    it('returns O when current player is X', () => {
+      expect(getNextPlayer(PlayerSymbol.X)).toBe(PlayerSymbol.O);
+    });
+
+    it('returns X when current player is O', () => {
+      expect(getNextPlayer(PlayerSymbol.O)).toBe(PlayerSymbol.X);
+    });
   });
 
-  it('returns the next player', () => {
-    expect(getNextPlayer(PlayerSymbol.X)).toBe(PlayerSymbol.O);
-    expect(getNextPlayer(PlayerSymbol.O)).toBe(PlayerSymbol.X);
+  describe('isValidMove', () => {
+    const board = [PlayerSymbol.X, null, PlayerSymbol.O];
+
+    it('returns true for an empty cell', () => {
+      expect(isValidMove(board, 1)).toBe(true);
+    });
+
+    it('returns false for a filled cell', () => {
+      expect(isValidMove(board, 0)).toBe(false);
+    });
   });
 
-  it('validates move correctly', () => {
-    const board: (Player | null)[] = [
-      PlayerSymbol.X,
-      null,
-      PlayerSymbol.O,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-    ];
-    expect(isValidMove(board, 0)).toBe(false);
+  describe('applyMove', () => {
+    const board = [null, null, null];
 
-    expect(isValidMove([...board], 1)).toBe(true);
+    it('returns a new board with the move applied', () => {
+      const result = applyMove(board, 1, PlayerSymbol.X);
+      expect(result).toEqual([null, PlayerSymbol.X, null]);
+    });
+
+    it('does not mutate the original board', () => {
+      const original = [null, null, null];
+      const copy = [...original];
+      applyMove(original, 0, PlayerSymbol.O);
+      expect(original).toEqual(copy);
+    });
   });
 });

@@ -1,10 +1,10 @@
-import { Player } from '../types/game';
+import { Player, PlayerSymbol } from '../types/game';
 
 export function getNextPlayer(current: Player): Player {
-  return current === 'X' ? 'O' : 'X';
+  return current === PlayerSymbol.X ? PlayerSymbol.O : PlayerSymbol.X;
 }
 
-export function isValidMove(board: (Player | null)[], index: number): boolean {
+export function isValidMove(board: (Player | null)[], index: number) {
   return board[index] === null;
 }
 

@@ -1,16 +1,22 @@
-import { DifficultyLevel, Player, type Difficulty } from '@/types/game';
-
+import { Difficulty, DifficultyLevel, Player } from '@/types/game';
 import { getRandomMove } from './random';
 import { getBestMove } from './minmax';
 
-export function getAiMove(board: (Player | null)[], difficulty: Difficulty = DifficultyLevel.Hard) {
-  switch (difficulty) {
-    case DifficultyLevel.Easy:
-      return getRandomMove(board);
-    case DifficultyLevel.Medium:
-      return getBestMove(board, 2);
-    case DifficultyLevel.Hard:
-    default:
-      return getBestMove(board);
+const depthMap: Record<Difficulty, number | undefined> = {
+  [DifficultyLevel.Easy]: undefined, // uses random
+  [DifficultyLevel.Medium]: 2,
+  [DifficultyLevel.Hard]: 6,
+};
+
+export function getAiMove(
+  board: (Player | null)[],
+  size: number,
+  difficulty: Difficulty = DifficultyLevel.Hard,
+) {
+  if (difficulty === DifficultyLevel.Easy) {
+    return getRandomMove(board);
   }
+
+  const depth = depthMap[difficulty];
+  return getBestMove(board, size, depth);
 }

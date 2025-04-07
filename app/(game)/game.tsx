@@ -11,11 +11,11 @@ import { useGameSettings } from '@/context/GameSettingsContext';
 import GridBoard from '@/components/GridBoard';
 
 export default function GameScreen() {
-  const { mode, difficulty, playerX, playerO } = useGameSettings();
+  const { mode, difficulty, playerX, playerO, gridSize } = useGameSettings();
   const isMultiplayer = mode === GameMode.Multi;
 
   const { userFirst, setResult } = useGameSettings();
-  const [board, setBoard] = useState<(Player | null)[]>(Array(9).fill(null));
+  const [board, setBoard] = useState<(Player | null)[]>(Array(gridSize * gridSize).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState<Player>(
     userFirst ? PlayerSymbol.X : PlayerSymbol.O,
   );
@@ -24,7 +24,7 @@ export default function GameScreen() {
   useEffect(() => {
     if (!isMultiplayer && currentPlayer === PlayerSymbol.O && !gameOver) {
       const delay = setTimeout(() => {
-        const move = getAiMove(board, difficulty);
+        const move = getAiMove(board, gridSize, difficulty);
         if (move !== -1) {
           setBoard(applyMove(board, move, PlayerSymbol.O));
           setCurrentPlayer(PlayerSymbol.X);
@@ -32,14 +32,13 @@ export default function GameScreen() {
       }, 600);
       return () => clearTimeout(delay);
     }
-  }, [currentPlayer, isMultiplayer, board, difficulty, gameOver]);
+  }, [currentPlayer, isMultiplayer, board, difficulty, gameOver, gridSize]);
 
   useEffect(() => {
-    const winner = checkWinner(board);
+    const winner = checkWinner(board, gridSize);
     if (winner || !board.includes(null)) {
       setGameOver(true);
 
-      // Set the result before routing
       const outcome =
         winner === PlayerSymbol.X
           ? GameResult.Win
@@ -47,13 +46,13 @@ export default function GameScreen() {
             ? GameResult.Lose
             : GameResult.Tie;
 
-      setResult(outcome); // ✅ Store in context
+      setResult(outcome);
 
       setTimeout(() => {
         router.replace('/result');
       }, 500);
     }
-  }, [board]);
+  }, [board, gridSize, setResult]);
 
   const handlePress = (i: number) => {
     if (!isValidMove(board, i) || gameOver) return;
@@ -73,7 +72,7 @@ export default function GameScreen() {
             : `Turn: ${currentPlayer === PlayerSymbol.X ? '🧑 You' : '🤖 AI'}`
         }
       />
-      <GridBoard board={board} onCellPress={handlePress} />
+      <GridBoard board={board} onCellPress={handlePress} size={gridSize} />
     </SafeAreaView>
   );
 }

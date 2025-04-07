@@ -6,13 +6,16 @@ import { COLORS } from '@/theme';
 type GridBoardProps = {
   board: (Player | null)[];
   onCellPress: (index: number) => void;
+  size: number;
 };
 
-export default function GridBoard({ board, onCellPress }: GridBoardProps) {
+export default function GridBoard({ board, onCellPress, size }: GridBoardProps) {
+  const cellSize: `${number}%` = `${100 / size}%`;
+
   return (
     <View style={styles.grid}>
       {board.map((val, i) => (
-        <GameCell key={i} value={val} onPress={() => onCellPress(i)} />
+        <GameCell key={i} value={val} onPress={() => onCellPress(i)} cellSize={cellSize} />
       ))}
     </View>
   );
