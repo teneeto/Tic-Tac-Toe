@@ -9,14 +9,12 @@
 ![Last Commit](https://img.shields.io/github/last-commit/teneeto/tic-tac-toe)
 ![Tests](https://github.com/teneeto/tic-tac-toe/actions/workflows/test.yml/badge.svg)
 
-A clean, scalable, and fully tested implementation of the classic Tic Tac Toe game built with **React Native**, **Expo**, and **TypeScript**. Designed as a code challenge to demonstrate architecture, testing practices, and UI/UX execution.
-
 ---
 
 ## 🚀 Features
 
-- 🔁 **3x3 Grid** (Hardcoded currently; scalable grid support baked into architecture)
-- 🧠 **Unbeatable AI** with full-depth **Minimax Algorithm** (with memoization)
+- ♻️ **3x3 Grid** (Hardcoded currently; scalable grid support baked into architecture)
+- 🧠 **Unbeatable AI** with full-depth **Minimax Algorithm**
 - 🧪 **Unit Tested** logic and components
 - 🔧 **Difficulty Levels**: Easy (random), Medium (limited depth), Hard (full-depth)
 - 👤 **Multiplayer Mode**
@@ -24,9 +22,8 @@ A clean, scalable, and fully tested implementation of the classic Tic Tac Toe ga
 - 💅 Clean and responsive **UI/UX**
 - 🌍 Centralized global **context state**
 - 🎨 Themed design tokens (spacing, colors, fonts)
-- 📦 Extensible and modular structure
+- 📆 Extensible and modular structure
 - ✅ Type-safe enums & shared types
-- 🔍 AI performance optimized with **memoized scores**
 
 ---
 
@@ -39,25 +36,6 @@ A clean, scalable, and fully tested implementation of the classic Tic Tac Toe ga
 - Minimax Algorithm (for unbeatable AI)
 - Jest + Testing Library (unit tests)
 - ESLint + Prettier + Theming system
-
----
-
-## 🗂️ Folder Structure
-
-```
-.
-├── app/                    # Expo Router screens
-│   ├── index.tsx           # Start screen (Single/Multiplayer)
-│   ├── game.tsx            # Main gameplay logic
-│   └── result.tsx          # Game result screen
-├── components/             # Reusable UI components (Button, GridBoard, etc)
-├── context/                # Global context (GameSettingsContext)
-├── lib/                    # Game logic (engine, move validation)
-├── theme/                  # Design tokens (colors, spacing, font sizes)
-├── types/                  # TypeScript enums and interfaces
-├── utils/                  # AI, Minimax, Random AI, winCombos
-└── tests/                  # Unit test cases
-```
 
 ---
 
@@ -103,13 +81,13 @@ npm run test
 
 ## 🧠 Technical Overview
 
-### 🔁 Minimax AI
+### ♻️ Minimax AI
 
 - Implemented recursively in `utils/minimax.ts`
-- Optimized with depth limiting and memoization
-- `getAiMove()` chooses strategy based on difficulty level
+- Optimized with configurable depth limiting
+- `getAiMove()` dynamically adjusts AI strategy based on difficulty level
 
-### 🧩 Componentization
+### 🧹 Componentization
 
 - `GridBoard`, `GameCell`, `Button`, `TurnIndicator` are fully reusable
 - Theme constants (`COLORS`, `SPACING`, `FONT_SIZES`) used throughout
@@ -124,7 +102,7 @@ Centralized in `lib/gameEngine.ts` and tested thoroughly.
 | ---------- | ------------------------------------ | -------------------- |
 | Easy       | Makes random moves                   | `getRandomMove()`    |
 | Medium     | Plays smarter with limited lookahead | `minimax(depth = 2)` |
-| Hard       | Unbeatable Minimax + memoization     | Full-depth search    |
+| Hard       | Unbeatable full Minimax              | Full-depth search    |
 
 ---
 
@@ -168,7 +146,7 @@ This challenge demonstrates:
 - Clear understanding of separation of concerns
 - Readable and maintainable code
 - Familiarity with React Native and Expo
-- Confidence with algorithms and optimizations (Minimax, memoization)
+- Confidence with algorithms and optimizations (Minimax)
 - Proactive structure for scalability
 
 ---
