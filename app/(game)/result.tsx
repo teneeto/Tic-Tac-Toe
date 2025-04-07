@@ -2,15 +2,15 @@ import Button from '@/components/Button';
 import { useGameSettings } from '@/context/GameSettingsContext';
 import { FONT_SIZES, SPACING } from '@/theme';
 import { GameMode, GameResult } from '@/types/game';
-import { useLocalSearchParams, router } from 'expo-router';
+import { router } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
 
 export default function ResultScreen() {
-  const { result } = useLocalSearchParams<{ result: GameResult }>();
-  const { mode, playerX, playerO } = useGameSettings();
+  const { result, mode, playerX, playerO } = useGameSettings();
   const isMultiplayer = mode === GameMode.Multi;
 
-  const getEmoji = () => (result === GameResult.Win ? '🎉' : result === 'lose' ? '😓' : '🤝');
+  const getEmoji = () =>
+    result === GameResult.Win ? '🎉' : result === GameResult.Lose ? '😓' : '🤝';
 
   const getMessage = () => {
     if (result === GameResult.Tie) return 'It’s a Tie!';
