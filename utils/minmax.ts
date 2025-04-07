@@ -1,6 +1,6 @@
-export type Player = "X" | "O";
+export type Player = 'X' | 'O';
 
-export function checkWinner(board: (Player | null)[]): Player | "tie" | null {
+export function checkWinner(board: (Player | null)[]): Player | 'tie' | null {
   const wins = [
     [0, 1, 2],
     [3, 4, 5],
@@ -13,20 +13,15 @@ export function checkWinner(board: (Player | null)[]): Player | "tie" | null {
   ];
 
   for (const [a, b, c] of wins) {
-    if (board[a] && board[a] === board[b] && board[b] === board[c])
-      return board[a];
+    if (board[a] && board[a] === board[b] && board[b] === board[c]) return board[a];
   }
 
-  return board.includes(null) ? null : "tie";
+  return board.includes(null) ? null : 'tie';
 }
 
-const scores: Record<"X" | "O" | "tie", number> = { X: -1, O: 1, tie: 0 };
+const scores: Record<'X' | 'O' | 'tie', number> = { X: -1, O: 1, tie: 0 };
 
-function minimax(
-  board: (Player | null)[],
-  depth: number,
-  isMax: boolean
-): number {
+function minimax(board: (Player | null)[], depth: number, isMax: boolean): number {
   const result = checkWinner(board);
   if (result !== null) return scores[result];
 
@@ -34,7 +29,7 @@ function minimax(
     let maxEval = -Infinity;
     for (let i = 0; i < board.length; i++) {
       if (!board[i]) {
-        board[i] = "O";
+        board[i] = 'O';
         const evalScore = minimax(board, depth + 1, false);
         board[i] = null;
         maxEval = Math.max(maxEval, evalScore);
@@ -45,7 +40,7 @@ function minimax(
     let minEval = Infinity;
     for (let i = 0; i < board.length; i++) {
       if (!board[i]) {
-        board[i] = "X";
+        board[i] = 'X';
         const evalScore = minimax(board, depth + 1, true);
         board[i] = null;
         minEval = Math.min(minEval, evalScore);
@@ -61,7 +56,7 @@ export function getBestMove(board: (Player | null)[]): number {
 
   for (let i = 0; i < board.length; i++) {
     if (!board[i]) {
-      board[i] = "O";
+      board[i] = 'O';
       const score = minimax(board, 0, false);
       board[i] = null;
       if (score > bestScore) {
