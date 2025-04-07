@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 
