@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-
-export type Difficulty = 'easy' | 'medium' | 'hard';
-export type Mode = 'single' | 'multi';
+import { DifficultyLevel, GameMode } from '@/types/game';
+import type { Difficulty, Mode } from '@/types/game';
 
 interface GameSettingsContextType {
   difficulty: Difficulty;
@@ -14,12 +13,11 @@ interface GameSettingsContextType {
   setPlayerO: (name: string) => void;
 }
 
-// ✅ Create the context with `undefined` and cast it safely
 const GameSettingsContext = createContext<GameSettingsContextType | undefined>(undefined);
 
 export const GameSettingsProvider = ({ children }: { children: ReactNode }) => {
-  const [difficulty, setDifficulty] = useState<Difficulty>('hard');
-  const [mode, setMode] = useState<Mode>('single');
+  const [difficulty, setDifficulty] = useState<Difficulty>(DifficultyLevel.Hard);
+  const [mode, setMode] = useState<Mode>(GameMode.Single);
   const [playerX, setPlayerX] = useState<string>('Player X');
   const [playerO, setPlayerO] = useState<string>('Player O');
 
@@ -32,7 +30,6 @@ export const GameSettingsProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// ✅ Custom hook with proper error handling
 export const useGameSettings = (): GameSettingsContextType => {
   const context = useContext(GameSettingsContext);
   if (!context) {

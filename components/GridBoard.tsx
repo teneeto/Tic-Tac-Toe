@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import GameCell from './GameCell';
-import { Player } from '../types/game';
-import { COLORS } from '../theme';
+import { Player } from '@/types/game';
+import { COLORS } from '@/theme';
 
 type GridBoardProps = {
   board: (Player | null)[];

@@ -1,5 +1,5 @@
+import { COLORS, FONT_SIZES, SPACING } from '@/theme';
 import { Pressable, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { COLORS, SPACING, FONT_SIZES } from '../theme';
 
 type ButtonProps = {
   title: string;

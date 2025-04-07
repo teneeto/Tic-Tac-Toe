@@ -1,26 +1,32 @@
-import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { useState } from 'react';
-import { useGameSettings } from '../../context/GameSettingsContext';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
-import Button from '../../components/Button';
-import { COLORS, SPACING } from '../../theme';
+
+import Button from '@/components/Button';
+import { COLORS, SPACING } from '@/theme';
+import { useGameSettings } from '@/context/GameSettingsContext';
+import { DifficultyLevel, GameMode, type Difficulty } from '@/types/game';
+
+const difficulties: Difficulty[] = [
+  DifficultyLevel.Easy,
+  DifficultyLevel.Medium,
+  DifficultyLevel.Hard,
+];
 
 export default function StartScreen() {
   const { setMode, setDifficulty, setPlayerX, setPlayerO } = useGameSettings();
   const [nameX, setNameXInput] = useState('');
   const [nameO, setNameOInput] = useState('');
-  const [selectedDifficulty, setSelectedDifficulty] = useState<'easy' | 'medium' | 'hard' | null>(
-    null,
-  );
+  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>();
 
   const handleStart = (userFirst: boolean) => {
-    setMode('single');
+    setMode(GameMode.Single);
     if (selectedDifficulty) setDifficulty(selectedDifficulty);
     router.push({ pathname: '/game', params: { userFirst: String(userFirst) } });
   };
 
   const startMultiplayer = () => {
-    setMode('multi');
+    setMode(GameMode.Multi);
     setPlayerX(nameX || 'Player X');
     setPlayerO(nameO || 'Player O');
     router.push('/game');
@@ -31,7 +37,7 @@ export default function StartScreen() {
       <Text style={styles.title}>🎮 Tic Tac Toe</Text>
 
       <Text style={styles.section}>Single Player</Text>
-      {['easy', 'medium', 'hard'].map((level) => (
+      {difficulties.map((level) => (
         <Button
           key={level}
           title={level.toUpperCase()}

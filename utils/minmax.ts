@@ -1,6 +1,6 @@
-export type Player = 'X' | 'O';
+import { GameResult, Player, PlayerSymbol } from '@/types/game';
 
-export function checkWinner(board: (Player | null)[]): Player | 'tie' | null {
+export function checkWinner(board: (Player | null)[]): Player | GameResult.Tie | null {
   const wins = [
     [0, 1, 2],
     [3, 4, 5],
@@ -14,7 +14,7 @@ export function checkWinner(board: (Player | null)[]): Player | 'tie' | null {
   for (const [a, b, c] of wins) {
     if (board[a] && board[a] === board[b] && board[b] === board[c]) return board[a];
   }
-  return board.includes(null) ? null : 'tie';
+  return board.includes(null) ? null : GameResult.Tie;
 }
 
 const scores = { X: -1, O: 1, tie: 0 };
@@ -25,7 +25,7 @@ export function getBestMove(board: (Player | null)[], maxDepth?: number): number
 
   for (let i = 0; i < board.length; i++) {
     if (!board[i]) {
-      board[i] = 'O';
+      board[i] = PlayerSymbol.O;
       const score = minimax(board, 0, false, maxDepth);
       board[i] = null;
       if (score > bestScore) {
@@ -53,7 +53,7 @@ function minimax(
     let best = -Infinity;
     for (let i = 0; i < board.length; i++) {
       if (!board[i]) {
-        board[i] = 'O';
+        board[i] = PlayerSymbol.O;
         const score = minimax(board, depth + 1, false, maxDepth);
         board[i] = null;
         best = Math.max(best, score);
@@ -64,7 +64,7 @@ function minimax(
     let best = Infinity;
     for (let i = 0; i < board.length; i++) {
       if (!board[i]) {
-        board[i] = 'X';
+        board[i] = PlayerSymbol.X;
         const score = minimax(board, depth + 1, true, maxDepth);
         board[i] = null;
         best = Math.min(best, score);

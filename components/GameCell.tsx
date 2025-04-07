@@ -1,6 +1,7 @@
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Player } from '../types/game';
+
 import { COLORS, FONT_SIZES } from '../theme';
+import { PlayerSymbol, type Player } from '@/types/game';
 
 type GameCellProps = {
   value: Player | null;
@@ -10,7 +11,13 @@ type GameCellProps = {
 export default function GameCell({ value, onPress }: GameCellProps) {
   return (
     <TouchableOpacity accessibilityRole="button" style={styles.cell} onPress={onPress}>
-      <Text style={[styles.text, value === 'X' && styles.xText, value === 'O' && styles.oText]}>
+      <Text
+        style={[
+          styles.text,
+          value === PlayerSymbol.X && styles.xText,
+          value === PlayerSymbol.O && styles.oText,
+        ]}
+      >
         {value}
       </Text>
     </TouchableOpacity>

@@ -1,15 +1,18 @@
-import { getBestMove, Player } from './minmax';
+import { DifficultyLevel, Player, type Difficulty } from '@/types/game';
+
 import { getRandomMove } from './random';
+import { getBestMove } from './minmax';
 
-export type Difficulty = 'easy' | 'medium' | 'hard';
-
-export function getAiMove(board: (Player | null)[], difficulty: Difficulty = 'hard'): number {
+export function getAiMove(
+  board: (Player | null)[],
+  difficulty: Difficulty = DifficultyLevel.Hard,
+): number {
   switch (difficulty) {
-    case 'easy':
+    case DifficultyLevel.Easy:
       return getRandomMove(board);
-    case 'medium':
+    case DifficultyLevel.Medium:
       return getBestMove(board, 2);
-    case 'hard':
+    case DifficultyLevel.Hard:
     default:
       return getBestMove(board);
   }
