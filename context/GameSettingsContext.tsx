@@ -17,7 +17,6 @@ interface GameSettingsContextType {
   setPlayerX: (name: string) => void;
   setPlayerO: (name: string) => void;
   setResult: (r: GameResult | null) => void;
-
   setGridSize: (size: number) => void;
 }
 
