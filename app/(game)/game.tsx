@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 
@@ -57,14 +57,17 @@ export default function GameScreen() {
     [board, gridSize, setResult],
   );
 
-  const handlePress = (i: number) => {
-    if (!isValidMove(board, i) || gameOver) return;
-    if (isMultiplayer || currentPlayer === PlayerSymbol.X) {
-      const updated = applyMove(board, i, currentPlayer);
-      setBoard(updated);
-      setCurrentPlayer(getNextPlayer(currentPlayer));
-    }
-  };
+  const handlePress = useCallback(
+    (i: number) => {
+      if (!isValidMove(board, i) || gameOver) return;
+      if (isMultiplayer || currentPlayer === PlayerSymbol.X) {
+        const updated = applyMove(board, i, currentPlayer);
+        setBoard(updated);
+        setCurrentPlayer(getNextPlayer(currentPlayer));
+      }
+    },
+    [board, gameOver, isMultiplayer, currentPlayer],
+  );
 
   return (
     <SafeAreaView style={styles.container}>

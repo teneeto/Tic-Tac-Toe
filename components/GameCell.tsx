@@ -1,6 +1,7 @@
 import { TouchableOpacity, Text, StyleSheet, DimensionValue } from 'react-native';
 import { COLORS, FONT_SIZES } from '../theme';
 import { PlayerSymbol, type Player } from '@/types/game';
+import { memo } from 'react';
 
 type GameCellProps = {
   value: Player | null;
@@ -8,7 +9,7 @@ type GameCellProps = {
   cellSize: DimensionValue;
 };
 
-export default function GameCell({ value, onPress, cellSize }: GameCellProps) {
+function GameCell({ value, onPress, cellSize }: GameCellProps) {
   return (
     <TouchableOpacity
       accessibilityRole="button"
@@ -47,3 +48,5 @@ const styles = StyleSheet.create({
     color: COLORS.danger,
   },
 });
+
+export default memo(GameCell);

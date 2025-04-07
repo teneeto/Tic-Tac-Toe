@@ -2,6 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import GameCell from './GameCell';
 import { Player } from '@/types/game';
 import { COLORS } from '@/theme';
+import { memo } from 'react';
 
 type GridBoardProps = {
   board: (Player | null)[];
@@ -9,7 +10,7 @@ type GridBoardProps = {
   size: number;
 };
 
-export default function GridBoard({ board, onCellPress, size }: GridBoardProps) {
+function GridBoard({ board, onCellPress, size }: GridBoardProps) {
   const cellSize: `${number}%` = `${100 / size}%`;
 
   return (
@@ -32,3 +33,5 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 });
+
+export default memo(GridBoard);
