@@ -15,6 +15,7 @@ import { useGameSettings } from '@/context/GameSettingsContext';
 import { GameMode, type Difficulty } from '@/types/game';
 import DifficultySelector from '@/components/DifficultySelector';
 import FirstPlayerSelector from '@/components/FirstPlayerSelector';
+import PlayerInput from '@/components/PlayerInput';
 
 export default function StartScreen() {
   const { setMode, setDifficulty, setPlayerX, setPlayerO, setUserFirst } = useGameSettings();
@@ -27,14 +28,14 @@ export default function StartScreen() {
     setMode(GameMode.Single);
     setDifficulty(selectedDifficulty);
     setUserFirst(userFirst);
-    router.push('/game');
+    router.replace('/game'); // ✅ replaces the screen to avoid back button
   };
 
   const startMultiplayer = () => {
     setMode(GameMode.Multi);
     setPlayerX(nameX || 'Player X');
     setPlayerO(nameO || 'Player O');
-    router.push('/game');
+    router.replace('/game'); // ✅ replaces the screen
   };
 
   return (
@@ -47,26 +48,13 @@ export default function StartScreen() {
         <Text style={styles.title}>🎮 Tic Tac Toe</Text>
 
         <Text style={styles.section}>Single Player vs AI</Text>
-
         <DifficultySelector selected={selectedDifficulty} onSelect={setSelectedDifficulty} />
 
         {selectedDifficulty && <FirstPlayerSelector onSelect={handleStart} />}
 
         <Text style={styles.section}>Multiplayer</Text>
-        <TextInput
-          placeholder="Player X Name"
-          value={nameX}
-          returnKeyType="done"
-          onChangeText={setNameXInput}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Player O Name"
-          value={nameO}
-          returnKeyType="done"
-          onChangeText={setNameOInput}
-          style={styles.input}
-        />
+        <PlayerInput placeholder="Player X Name" value={nameX} onChangeText={setNameXInput} />
+        <PlayerInput placeholder="Player O Name" value={nameO} onChangeText={setNameOInput} />
         <Button title="Start Multiplayer" onPress={startMultiplayer} variant="primary" />
       </ScrollView>
     </KeyboardAvoidingView>
@@ -105,14 +93,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 6,
     marginVertical: 8,
-  },
-  selected: {
-    backgroundColor: COLORS.grey,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 12,
   },
   difficultyWrapper: {
     alignItems: 'center',
