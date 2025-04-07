@@ -1,50 +1,131 @@
-# Welcome to your Expo app 👋
+# 🎮 Tic Tac Toe – React Native (Expo)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A clean and scalable single-player & multiplayer Tic Tac Toe game built with React Native + Expo. Developed as part of a hiring challenge for This Dot Labs.
 
-## Get started
+---
 
-1. Install dependencies
+## ✅ Features
 
-   ```bash
-   npm install
-   ```
+- 🧠 **Unbeatable AI** using the Minimax algorithm (Hard mode)
+- 🧩 **Difficulty Levels**: Easy (random), Medium (depth-limited), Hard (Minimax)
+- 👯 **Multiplayer Mode**: Two-player mode with custom names
+- 🧠 **Turn Indicator**: Shows who's playing – You vs Computer, or Player X vs O
+- 🎉 **Game Result Screen**: Custom win/loss/tie messages with emojis
+- 🎨 **Clean UI**: Styled components with reusable themes and spacing
+- 📱 **Responsive Design**: Works on various screen sizes
+- ✅ **Tested**: Core logic and components tested with Jest
 
-2. Start the app
+---
 
-   ```bash
-    npx expo start
-   ```
+## 📦 Stack
 
-In the output, you'll find options to open the app in a
+- React Native + Expo
+- TypeScript
+- Expo Router
+- Context API (for global game settings)
+- Minimax Algorithm (for unbeatable AI)
+- Jest + Testing Library (unit tests)
+- ESLint + Prettier + Theming system
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🚀 Getting Started
 
-## Get a fresh project
-
-When you're ready, run:
+### 📥 Clone
 
 ```bash
-npm run reset-project
+git clone https://github.com/your-username/tic-tac-toe-react-native.git
+cd tic-tac-toe-react-native
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 📦 Install Dependencies
 
-## Learn more
+```bash
+npm install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### ▶️ Run the App
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npx expo start
+```
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## 🧪 Testing
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Run unit tests:
+
+```bash
+npm test
+```
+
+Includes tests for:
+
+- Game logic (minimax, win checks)
+- AI move generation
+- UI components (Button, GameCell, GridBoard)
+- Result logic
+
+---
+
+## 🧠 Technical Overview
+
+### 🔁 Minimax AI
+
+- Implemented recursively in `utils/minimax.ts`
+- Optimized with depth limiting and memoization
+- `getAiMove()` chooses strategy based on difficulty level
+
+### 🧩 Componentization
+
+- `GridBoard`, `GameCell`, `Button`, `TurnIndicator` are fully reusable
+- Theme constants (`COLORS`, `SPACING`, `FONT_SIZES`) used throughout
+
+### 🧠 Game Logic
+
+Centralized in `lib/gameEngine.ts` and tested thoroughly.
+
+---
+
+## 📚 Folder Structure
+
+```
+/app
+  └── index.tsx         ← Start screen
+  └── game.tsx          ← Game screen
+  └── result.tsx        ← Result screen
+/components
+  └── Button.tsx, GridBoard.tsx, etc.
+/context
+  └── GameSettingsContext.tsx
+/lib
+  └── gameEngine.ts     ← Core logic
+/utils
+  └── minimax.ts, ai.ts, random.ts
+/theme
+  └── colors.ts, spacing.ts, fontSizes.ts
+/types
+  └── game.ts           ← Enums + shared types
+```
+
+---
+
+## 📌 Notes for Reviewers
+
+- The app is locked to **portrait orientation** to maintain layout consistency.
+- While difficulty levels and multiplayer mode are **not required**, they were added to demonstrate architectural thinking and user experience polish.
+- All gameplay paths (win/loss/tie) have been verified, and the hard mode is truly unbeatable.
+
+---
+
+## 🧑‍💻 Author
+
+Etotaziba Olei Tene Kamalu  
+React Native Engineer · Technical Product Thinker
+
+---
+
+## 🥂 Thank You!
+
+Thanks for reviewing this project. I’m excited to discuss the decisions made here in the next interview!

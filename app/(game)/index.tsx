@@ -36,21 +36,26 @@ export default function StartScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>🎮 Tic Tac Toe</Text>
 
-      <Text style={styles.section}>Single Player</Text>
-      {difficulties.map((level) => (
-        <Button
-          key={level}
-          title={level.toUpperCase()}
-          onPress={() => setSelectedDifficulty(level as any)}
-          style={selectedDifficulty === level ? styles.selected : undefined}
-        />
-      ))}
+      <Text style={styles.section}>Single Player vs AI</Text>
+
+      <View style={styles.row}>
+        {difficulties.map((level) => (
+          <Button
+            key={level}
+            title={level.toUpperCase()}
+            onPress={() => setSelectedDifficulty(level)}
+            style={selectedDifficulty === level ? styles.selected : undefined}
+          />
+        ))}
+      </View>
 
       {selectedDifficulty && (
         <>
           <Text style={styles.subtext}>Who should play first?</Text>
-          <Button title="You" onPress={() => handleStart(true)} />
-          <Button title="Computer" onPress={() => handleStart(false)} />
+          <View style={styles.row}>
+            <Button title="You" onPress={() => handleStart(true)} />
+            <Button title="Computer" onPress={() => handleStart(false)} />
+          </View>
         </>
       )}
 
@@ -87,5 +92,10 @@ const styles = StyleSheet.create({
   },
   selected: {
     backgroundColor: COLORS.grey,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 12,
   },
 });
