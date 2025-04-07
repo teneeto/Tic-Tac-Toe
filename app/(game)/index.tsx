@@ -1,12 +1,5 @@
 import { useState } from 'react';
-import {
-  Text,
-  TextInput,
-  StyleSheet,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform,
-} from 'react-native';
+import { Text, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { router } from 'expo-router';
 
 import Button from '@/components/Button';
@@ -28,14 +21,14 @@ export default function StartScreen() {
     setMode(GameMode.Single);
     setDifficulty(selectedDifficulty);
     setUserFirst(userFirst);
-    router.replace('/game'); // ✅ replaces the screen to avoid back button
+    router.replace('/game');
   };
 
   const startMultiplayer = () => {
     setMode(GameMode.Multi);
     setPlayerX(nameX || 'Player X');
     setPlayerO(nameO || 'Player O');
-    router.replace('/game'); // ✅ replaces the screen
+    router.replace('/game');
   };
 
   return (
