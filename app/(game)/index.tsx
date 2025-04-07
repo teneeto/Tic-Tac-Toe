@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  View,
   Text,
   TextInput,
   StyleSheet,
@@ -15,6 +14,7 @@ import { COLORS, SPACING } from '@/theme';
 import { useGameSettings } from '@/context/GameSettingsContext';
 import { GameMode, type Difficulty } from '@/types/game';
 import DifficultySelector from '@/components/DifficultySelector';
+import FirstPlayerSelector from '@/components/FirstPlayerSelector';
 
 export default function StartScreen() {
   const { setMode, setDifficulty, setPlayerX, setPlayerO, setUserFirst } = useGameSettings();
@@ -50,15 +50,7 @@ export default function StartScreen() {
 
         <DifficultySelector selected={selectedDifficulty} onSelect={setSelectedDifficulty} />
 
-        {selectedDifficulty && (
-          <>
-            <Text style={styles.subtext}>Who should play first?</Text>
-            <View style={styles.row}>
-              <Button title="You" onPress={() => handleStart(true)} />
-              <Button title="Computer" onPress={() => handleStart(false)} />
-            </View>
-          </>
-        )}
+        <FirstPlayerSelector onSelect={handleStart} />
 
         <Text style={styles.section}>Multiplayer</Text>
         <TextInput
