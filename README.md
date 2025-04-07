@@ -1,6 +1,10 @@
 # 🎮 Tic Tac Toe — React Native + Expo
 
 [![CodeFactor](https://www.codefactor.io/repository/github/teneeto/tic-tac-toe/badge)](https://www.codefactor.io/repository/github/teneeto/tic-tac-toe)
+![Expo](https://img.shields.io/badge/Expo-%5E49.0.0-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-%5E5.0-blue)
+![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 A clean, scalable, and fully tested implementation of the classic Tic Tac Toe game built with **React Native**, **Expo**, and **TypeScript**. Designed as a code challenge to demonstrate architecture, testing practices, and UI/UX execution.
 
