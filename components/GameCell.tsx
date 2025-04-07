@@ -9,7 +9,7 @@ type GameCellProps = {
 
 export default function GameCell({ value, onPress }: GameCellProps) {
   return (
-    <TouchableOpacity style={styles.cell} onPress={onPress}>
+    <TouchableOpacity accessibilityRole="button" style={styles.cell} onPress={onPress}>
       <Text style={[styles.text, value === 'X' && styles.xText, value === 'O' && styles.oText]}>
         {value}
       </Text>
