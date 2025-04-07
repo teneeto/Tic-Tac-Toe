@@ -9,7 +9,6 @@ export function checkWinner(board: (Player | null)[], size: number) {
       return board[first];
     }
   }
-
   return board.includes(null) ? null : GameResult.Tie;
 }
 
@@ -19,16 +18,19 @@ const scores = {
   tie: 0,
 };
 
-export function getBestMove(board: (Player | null)[], size: number, maxDepth?: number) {
-  const cache = new Map<string, number>();
-
+export function getBestMove(
+  board: (Player | null)[],
+  size: number,
+  player: Player,
+  maxDepth?: number,
+): number {
   let bestScore = -Infinity;
   let move = -1;
 
   for (let i = 0; i < board.length; i++) {
     if (!board[i]) {
-      board[i] = PlayerSymbol.O;
-      const score = minimax(board, size, 0, false, maxDepth, cache);
+      board[i] = player;
+      const score = minimax(board, size, 0, false, maxDepth);
       board[i] = null;
 
       if (score > bestScore) {
@@ -47,31 +49,24 @@ function minimax(
   depth: number,
   isMax: boolean,
   maxDepth?: number,
-  cache?: Map<string, number>,
-) {
-  const key = board.join('');
-
-  if (cache?.has(key)) {
-    return cache.get(key)!;
-  }
-
+): number {
   const result = checkWinner(board, size);
   if (result !== null) return scores[result];
 
   if (maxDepth !== undefined && depth >= maxDepth) return 0;
 
+  const player = isMax ? PlayerSymbol.O : PlayerSymbol.X;
   let best = isMax ? -Infinity : Infinity;
 
   for (let i = 0; i < board.length; i++) {
     if (!board[i]) {
-      board[i] = isMax ? PlayerSymbol.O : PlayerSymbol.X;
-      const score = minimax(board, size, depth + 1, !isMax, maxDepth, cache);
+      board[i] = player;
+      const score = minimax(board, size, depth + 1, !isMax, maxDepth);
       board[i] = null;
 
       best = isMax ? Math.max(best, score) : Math.min(best, score);
     }
   }
 
-  cache?.set(key, best);
   return best;
 }
