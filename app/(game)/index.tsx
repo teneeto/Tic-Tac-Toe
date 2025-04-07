@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Text,
   TextInput,
@@ -21,6 +21,12 @@ export default function StartScreen() {
   const [nameX, setNameXInput] = useState('');
   const [nameO, setNameOInput] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>();
+
+  // useEffect(() => {
+  //   setSelectedDifficulty(undefined);
+  //   setNameXInput('');
+  //   setNameOInput('');
+  // }, []);
 
   const handleStart = (userFirst: boolean) => {
     if (!selectedDifficulty) return;
@@ -50,7 +56,7 @@ export default function StartScreen() {
 
         <DifficultySelector selected={selectedDifficulty} onSelect={setSelectedDifficulty} />
 
-        <FirstPlayerSelector onSelect={handleStart} />
+        {selectedDifficulty && <FirstPlayerSelector onSelect={handleStart} />}
 
         <Text style={styles.section}>Multiplayer</Text>
         <TextInput
