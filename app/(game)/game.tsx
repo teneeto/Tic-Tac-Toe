@@ -48,9 +48,10 @@ export default function GameScreen() {
 
       setResult(outcome);
 
-      setTimeout(() => {
+      const delay = setTimeout(() => {
         router.replace('/result');
-      }, 500);
+      }, 600);
+      return () => clearTimeout(delay);
     }
   }, [board, gridSize, setResult]);
 
