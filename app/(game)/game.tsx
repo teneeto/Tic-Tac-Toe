@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useGameSettings } from '../../context/GameSettingsContext';
@@ -9,13 +9,14 @@ export default function GameScreen() {
   const { mode, difficulty, playerX, playerO } = useGameSettings();
   const isMultiplayer = mode === 'multi';
 
+  const { userFirst = 'true' } = useLocalSearchParams<{ userFirst?: string }>();
   const [board, setBoard] = useState<(Player | null)[]>(Array(9).fill(null));
-  const [currentPlayer, setCurrentPlayer] = useState<Player>('X');
+  const [currentPlayer, setCurrentPlayer] = useState<Player>(userFirst === 'true' ? 'X' : 'O');
   const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
     if (!isMultiplayer && currentPlayer === 'O' && !gameOver) {
-      requestAnimationFrame(() => {
+      setTimeout(() => {
         const move = getAiMove(board, difficulty);
         if (move !== -1) {
           const newBoard = [...board];
@@ -23,9 +24,9 @@ export default function GameScreen() {
           setBoard(newBoard);
           setCurrentPlayer('X');
         }
-      });
+      }, 600);
     }
-  }, [currentPlayer, board, difficulty, isMultiplayer, gameOver]);
+  }, [currentPlayer]);
 
   useEffect(() => {
     const winner = checkWinner(board);
