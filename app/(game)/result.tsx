@@ -1,9 +1,12 @@
 import { useLocalSearchParams, router } from 'expo-router';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useGameSettings } from '../../context/GameSettingsContext';
+import Button from '../../components/Button';
+import { GameResult } from '../../types/game';
+import { COLORS, FONT_SIZES, SPACING } from '../../theme';
 
 export default function ResultScreen() {
-  const { result } = useLocalSearchParams<{ result: string }>();
+  const { result } = useLocalSearchParams<{ result: GameResult }>();
   const { mode, playerX, playerO } = useGameSettings();
   const isMultiplayer = mode === 'multi';
 
@@ -19,17 +22,18 @@ export default function ResultScreen() {
     <View style={styles.container}>
       <Text style={styles.emoji}>{getEmoji()}</Text>
       <Text style={styles.resultText}>{getMessage()}</Text>
-      <Pressable style={styles.button} onPress={() => router.replace('/')}>
-        <Text style={styles.buttonText}>Play Again</Text>
-      </Pressable>
+      <Button title="Play Again" onPress={() => router.replace('/')} variant="primary" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: SPACING.large },
   emoji: { fontSize: 64, marginBottom: 20 },
-  resultText: { fontSize: 28, fontWeight: '600', textAlign: 'center' },
-  button: { marginTop: 30, padding: 12, backgroundColor: '#007AFF', borderRadius: 6 },
-  buttonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
+  resultText: {
+    fontSize: FONT_SIZES.large,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: SPACING.medium,
+  },
 });

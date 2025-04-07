@@ -1,7 +1,9 @@
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { useGameSettings } from '../../context/GameSettingsContext';
+import { router } from 'expo-router';
+import Button from '../../components/Button';
+import { COLORS, SPACING } from '../../theme';
 
 export default function StartScreen() {
   const { setMode, setDifficulty, setPlayerX, setPlayerO } = useGameSettings();
@@ -28,34 +30,25 @@ export default function StartScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>🎮 Tic Tac Toe</Text>
 
-      <Text style={styles.sectionTitle}>Single Player</Text>
-      <View style={styles.row}>
-        {['easy', 'medium', 'hard'].map((level) => (
-          <Pressable
-            key={level}
-            style={[styles.button, selectedDifficulty === level && styles.selected]}
-            onPress={() => setSelectedDifficulty(level as any)}
-          >
-            <Text style={styles.buttonText}>{level.toUpperCase()}</Text>
-          </Pressable>
-        ))}
-      </View>
+      <Text style={styles.section}>Single Player</Text>
+      {['easy', 'medium', 'hard'].map((level) => (
+        <Button
+          key={level}
+          title={level.toUpperCase()}
+          onPress={() => setSelectedDifficulty(level as any)}
+          style={selectedDifficulty === level ? styles.selected : undefined}
+        />
+      ))}
 
       {selectedDifficulty && (
-        <View>
+        <>
           <Text style={styles.subtext}>Who should play first?</Text>
-          <View style={styles.row}>
-            <Pressable style={styles.button} onPress={() => handleStart(true)}>
-              <Text style={styles.buttonText}>You</Text>
-            </Pressable>
-            <Pressable style={styles.button} onPress={() => handleStart(false)}>
-              <Text style={styles.buttonText}>Computer</Text>
-            </Pressable>
-          </View>
-        </View>
+          <Button title="You" onPress={() => handleStart(true)} />
+          <Button title="Computer" onPress={() => handleStart(false)} />
+        </>
       )}
 
-      <Text style={styles.sectionTitle}>Multiplayer</Text>
+      <Text style={styles.section}>Multiplayer</Text>
       <TextInput
         placeholder="Player X Name"
         value={nameX}
@@ -68,39 +61,25 @@ export default function StartScreen() {
         onChangeText={setNameOInput}
         style={styles.input}
       />
-      <Pressable style={[styles.button, styles.primary]} onPress={startMultiplayer}>
-        <Text style={[styles.buttonText, styles.primaryText]}>Start Multiplayer</Text>
-      </Pressable>
+      <Button title="Start Multiplayer" onPress={startMultiplayer} variant="primary" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, justifyContent: 'center' },
-  title: { fontSize: 32, textAlign: 'center', marginBottom: 30 },
-  sectionTitle: { fontSize: 20, fontWeight: '600', marginTop: 20, marginBottom: 10 },
+  container: { flex: 1, padding: SPACING.large, justifyContent: 'center' },
+  title: { fontSize: 32, textAlign: 'center', marginBottom: SPACING.large },
+  section: { fontSize: 20, fontWeight: '600', marginTop: 20, marginBottom: 10 },
   subtext: { fontSize: 16, textAlign: 'center', marginVertical: 10 },
-  row: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 },
-  button: {
-    backgroundColor: '#ddd',
-    marginHorizontal: 5,
-    padding: 12,
-    borderRadius: 6,
-    alignItems: 'center',
-    minWidth: 100,
-  },
-  buttonText: { fontWeight: '600', color: '#333', textAlign: 'center' },
-  selected: {
-    backgroundColor: '#aaa',
-  },
-  primary: { backgroundColor: '#007AFF' },
-  primaryText: { color: '#fff' },
   input: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: COLORS.grey,
     padding: 10,
     borderRadius: 6,
     marginVertical: 8,
+  },
+  selected: {
+    backgroundColor: COLORS.grey,
   },
 });

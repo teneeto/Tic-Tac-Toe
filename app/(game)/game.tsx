@@ -1,9 +1,13 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { useGameSettings } from '../../context/GameSettingsContext';
 import { getAiMove } from '../../utils/ai';
-import { Player, checkWinner } from '../../utils/minmax';
+import { checkWinner } from '../../utils/minmax';
+import { getNextPlayer, isValidMove, applyMove } from '../../lib/gameEngine';
+import { Player } from '../../types/game';
+import GridBoard from '../../components/GridBoard';
+import TurnIndicator from '../../components/TurnIndicator';
 
 export default function GameScreen() {
   const { mode, difficulty, playerX, playerO } = useGameSettings();
@@ -14,20 +18,21 @@ export default function GameScreen() {
   const [currentPlayer, setCurrentPlayer] = useState<Player>(userFirst === 'true' ? 'X' : 'O');
   const [gameOver, setGameOver] = useState(false);
 
+  // AI move trigger
   useEffect(() => {
     if (!isMultiplayer && currentPlayer === 'O' && !gameOver) {
-      setTimeout(() => {
+      const delay = setTimeout(() => {
         const move = getAiMove(board, difficulty);
         if (move !== -1) {
-          const newBoard = [...board];
-          newBoard[move] = 'O';
-          setBoard(newBoard);
+          setBoard(applyMove(board, move, 'O'));
           setCurrentPlayer('X');
         }
       }, 600);
+      return () => clearTimeout(delay);
     }
   }, [currentPlayer]);
 
+  // Win/tie check
   useEffect(() => {
     const winner = checkWinner(board);
     if (winner || !board.includes(null)) {
@@ -35,66 +40,38 @@ export default function GameScreen() {
       setTimeout(() => {
         router.replace({
           pathname: '/result',
-          params: { result: winner === 'X' ? 'win' : winner === 'O' ? 'lose' : 'tie' },
+          params: {
+            result: winner === 'X' ? 'win' : winner === 'O' ? 'lose' : 'tie',
+          },
         });
       }, 500);
     }
   }, [board]);
 
+  // Handle tap on cell
   const handlePress = (i: number) => {
-    if (board[i] || gameOver) return;
+    if (!isValidMove(board, i) || gameOver) return;
     if (isMultiplayer || currentPlayer === 'X') {
-      const newBoard = [...board];
-      newBoard[i] = currentPlayer;
-      setBoard(newBoard);
-      setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+      const updated = applyMove(board, i, currentPlayer);
+      setBoard(updated);
+      setCurrentPlayer(getNextPlayer(currentPlayer));
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.turnText}>
-        {isMultiplayer
-          ? `Turn: ${currentPlayer === 'X' ? playerX : playerO}`
-          : `Turn: ${currentPlayer === 'X' ? '🧑 You' : '🤖 AI'}`}
-      </Text>
-      <View style={styles.grid}>
-        {board.map((val, i) => (
-          <TouchableOpacity key={i} style={styles.cell} onPress={() => handlePress(i)}>
-            <Text
-              style={[styles.cellText, val === 'X' && styles.xText, val === 'O' && styles.oText]}
-            >
-              {val}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <TurnIndicator
+        text={
+          isMultiplayer
+            ? `Turn: ${currentPlayer === 'X' ? playerX : playerO}`
+            : `Turn: ${currentPlayer === 'X' ? '🧑 You' : '🤖 AI'}`
+        }
+      />
+      <GridBoard board={board} onCellPress={handlePress} />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
-  turnText: { fontSize: 20, marginBottom: 16, fontWeight: '600' },
-  grid: {
-    width: 320,
-    height: 320,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: '#eee',
-  },
-  cell: {
-    width: '33.33%',
-    height: '33.33%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: '#ccc',
-    borderWidth: 0.5,
-    backgroundColor: '#fff',
-  },
-  cellText: { fontSize: 40, fontWeight: 'bold' },
-  xText: { color: '#007AFF' },
-  oText: { color: '#FF3B30' },
 });
