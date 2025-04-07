@@ -8,7 +8,6 @@
 ![ESLint](https://img.shields.io/badge/eslint-passing-brightgreen.svg)
 ![Last Commit](https://img.shields.io/github/last-commit/teneeto/tic-tac-toe)
 ![Tests](https://github.com/teneeto/tic-tac-toe/actions/workflows/test.yml/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/teneeto/tic-tac-toe/badge.svg?branch=main)](https://coveralls.io/github/teneeto/tic-tac-toe?branch=main)
 
 A clean, scalable, and fully tested implementation of the classic Tic Tac Toe game built with **React Native**, **Expo**, and **TypeScript**. Designed as a code challenge to demonstrate architecture, testing practices, and UI/UX execution.
 
