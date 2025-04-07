@@ -5,7 +5,7 @@ import { getBestMove, Player, checkWinner } from "../../utils/minmax";
 
 export default function GameScreen() {
   const { userFirst } = useLocalSearchParams();
-  const [board, setBoard] = useState<Array<Player | null>>(Array(9).fill(null));
+  const [board, setBoard] = useState<(Player | null)[]>(Array(9).fill(null));
   const [userTurn, setUserTurn] = useState(userFirst === "true");
   const [gameOver, setGameOver] = useState(false);
 
@@ -21,7 +21,7 @@ export default function GameScreen() {
         }
       });
     }
-  }, [userTurn]);
+  }, [userTurn, board, gameOver]);
 
   useEffect(() => {
     const winner = checkWinner(board);

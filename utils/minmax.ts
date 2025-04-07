@@ -1,8 +1,6 @@
 export type Player = "X" | "O";
 
-export function checkWinner(
-  board: Array<Player | null>
-): Player | "tie" | null {
+export function checkWinner(board: (Player | null)[]): Player | "tie" | null {
   const wins = [
     [0, 1, 2],
     [3, 4, 5],
@@ -25,7 +23,7 @@ export function checkWinner(
 const scores: Record<"X" | "O" | "tie", number> = { X: -1, O: 1, tie: 0 };
 
 function minimax(
-  board: Array<Player | null>,
+  board: (Player | null)[],
   depth: number,
   isMax: boolean
 ): number {
@@ -57,7 +55,7 @@ function minimax(
   }
 }
 
-export function getBestMove(board: Array<Player | null>): number {
+export function getBestMove(board: (Player | null)[]): number {
   let bestScore = -Infinity;
   let move = -1;
 
