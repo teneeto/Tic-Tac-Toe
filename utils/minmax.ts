@@ -2,20 +2,41 @@ import { GameResult, Player, PlayerSymbol } from '@/types/game';
 import { generateWinCombos } from './winCombos';
 
 export function checkWinner(board: (Player | null)[], size: number) {
-  const wins = generateWinCombos(size);
-  for (const combo of wins) {
+  if (size === 3) {
+    const wins = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (const [a, b, c] of wins) {
+      if (board[a] && board[a] === board[b] && board[b] === board[c]) return board[a];
+    }
+
+    return board.includes(null) ? null : 'tie';
+  }
+
+  // fallback for other board sizes
+  const winCombos = generateWinCombos(size);
+  for (const combo of winCombos) {
     const [first, ...rest] = combo;
     if (board[first] && rest.every((i) => board[i] === board[first])) {
       return board[first];
     }
   }
-  return board.includes(null) ? null : GameResult.Tie;
+
+  return board.includes(null) ? null : 'tie';
 }
 
 const scores = {
   [PlayerSymbol.X]: -1,
   [PlayerSymbol.O]: 1,
-  tie: 0,
+  [GameResult.Tie]: 0,
 };
 
 export function getBestMove(
@@ -23,7 +44,7 @@ export function getBestMove(
   size: number,
   player: Player,
   maxDepth?: number,
-): number {
+) {
   let bestScore = -Infinity;
   let move = -1;
 
@@ -49,7 +70,7 @@ function minimax(
   depth: number,
   isMax: boolean,
   maxDepth?: number,
-): number {
+) {
   const result = checkWinner(board, size);
   if (result !== null) return scores[result];
 
