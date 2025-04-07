@@ -11,53 +11,22 @@ export function checkWinner(board: (Player | null)[]): Player | 'tie' | null {
     [0, 4, 8],
     [2, 4, 6],
   ];
-
   for (const [a, b, c] of wins) {
     if (board[a] && board[a] === board[b] && board[b] === board[c]) return board[a];
   }
-
   return board.includes(null) ? null : 'tie';
 }
 
-const scores: Record<'X' | 'O' | 'tie', number> = { X: -1, O: 1, tie: 0 };
+const scores = { X: -1, O: 1, tie: 0 };
 
-function minimax(board: (Player | null)[], depth: number, isMax: boolean): number {
-  const result = checkWinner(board);
-  if (result !== null) return scores[result];
-
-  if (isMax) {
-    let maxEval = -Infinity;
-    for (let i = 0; i < board.length; i++) {
-      if (!board[i]) {
-        board[i] = 'O';
-        const evalScore = minimax(board, depth + 1, false);
-        board[i] = null;
-        maxEval = Math.max(maxEval, evalScore);
-      }
-    }
-    return maxEval;
-  } else {
-    let minEval = Infinity;
-    for (let i = 0; i < board.length; i++) {
-      if (!board[i]) {
-        board[i] = 'X';
-        const evalScore = minimax(board, depth + 1, true);
-        board[i] = null;
-        minEval = Math.min(minEval, evalScore);
-      }
-    }
-    return minEval;
-  }
-}
-
-export function getBestMove(board: (Player | null)[]): number {
+export function getBestMove(board: (Player | null)[], maxDepth?: number): number {
   let bestScore = -Infinity;
   let move = -1;
 
   for (let i = 0; i < board.length; i++) {
     if (!board[i]) {
       board[i] = 'O';
-      const score = minimax(board, 0, false);
+      const score = minimax(board, 0, false, maxDepth);
       board[i] = null;
       if (score > bestScore) {
         bestScore = score;
@@ -67,4 +36,40 @@ export function getBestMove(board: (Player | null)[]): number {
   }
 
   return move;
+}
+
+function minimax(
+  board: (Player | null)[],
+  depth: number,
+  isMax: boolean,
+  maxDepth?: number,
+): number {
+  const result = checkWinner(board);
+  if (result !== null) return scores[result];
+
+  if (maxDepth !== undefined && depth >= maxDepth) return 0;
+
+  if (isMax) {
+    let best = -Infinity;
+    for (let i = 0; i < board.length; i++) {
+      if (!board[i]) {
+        board[i] = 'O';
+        const score = minimax(board, depth + 1, false, maxDepth);
+        board[i] = null;
+        best = Math.max(best, score);
+      }
+    }
+    return best;
+  } else {
+    let best = Infinity;
+    for (let i = 0; i < board.length; i++) {
+      if (!board[i]) {
+        board[i] = 'X';
+        const score = minimax(board, depth + 1, true, maxDepth);
+        board[i] = null;
+        best = Math.min(best, score);
+      }
+    }
+    return best;
+  }
 }
