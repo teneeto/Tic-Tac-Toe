@@ -1,6 +1,6 @@
 import { GameResult, Player, PlayerSymbol } from '@/types/game';
 
-export function checkWinner(board: (Player | null)[]): Player | GameResult.Tie | null {
+export function checkWinner(board: (Player | null)[]) {
   const wins = [
     [0, 1, 2],
     [3, 4, 5],
@@ -19,7 +19,7 @@ export function checkWinner(board: (Player | null)[]): Player | GameResult.Tie |
 
 const scores = { X: -1, O: 1, tie: 0 };
 
-export function getBestMove(board: (Player | null)[], maxDepth?: number): number {
+export function getBestMove(board: (Player | null)[], maxDepth?: number) {
   let bestScore = -Infinity;
   let move = -1;
 
@@ -38,12 +38,7 @@ export function getBestMove(board: (Player | null)[], maxDepth?: number): number
   return move;
 }
 
-function minimax(
-  board: (Player | null)[],
-  depth: number,
-  isMax: boolean,
-  maxDepth?: number,
-): number {
+function minimax(board: (Player | null)[], depth: number, isMax: boolean, maxDepth?: number) {
   const result = checkWinner(board);
   if (result !== null) return scores[result];
 
