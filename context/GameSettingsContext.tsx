@@ -7,6 +7,8 @@ interface GameSettingsContextType {
   mode: Mode;
   playerX: string;
   playerO: string;
+  userFirst: boolean;
+  setUserFirst: (first: boolean) => void;
   setDifficulty: (d: Difficulty) => void;
   setMode: (m: Mode) => void;
   setPlayerX: (name: string) => void;
@@ -20,10 +22,22 @@ export const GameSettingsProvider = ({ children }: { children: ReactNode }) => {
   const [mode, setMode] = useState<Mode>(GameMode.Single);
   const [playerX, setPlayerX] = useState<string>('Player X');
   const [playerO, setPlayerO] = useState<string>('Player O');
+  const [userFirst, setUserFirst] = useState(true);
 
   return (
     <GameSettingsContext.Provider
-      value={{ difficulty, mode, playerX, playerO, setDifficulty, setMode, setPlayerX, setPlayerO }}
+      value={{
+        difficulty,
+        mode,
+        playerX,
+        playerO,
+        userFirst,
+        setUserFirst,
+        setDifficulty,
+        setMode,
+        setPlayerX,
+        setPlayerO,
+      }}
     >
       {children}
     </GameSettingsContext.Provider>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router } from 'expo-router';
 
 import { getAiMove } from '@/utils/ai';
 import { checkWinner } from '@/utils/minmax';
@@ -14,7 +14,7 @@ export default function GameScreen() {
   const { mode, difficulty, playerX, playerO } = useGameSettings();
   const isMultiplayer = mode === GameMode.Multi;
 
-  const { userFirst = 'true' } = useLocalSearchParams<{ userFirst?: string }>();
+  const { userFirst } = useGameSettings();
   const [board, setBoard] = useState<(Player | null)[]>(Array(9).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState<Player>(
     userFirst ? PlayerSymbol.X : PlayerSymbol.O,
@@ -32,7 +32,7 @@ export default function GameScreen() {
       }, 600);
       return () => clearTimeout(delay);
     }
-  }, [currentPlayer]);
+  }, [currentPlayer, isMultiplayer, board, difficulty, gameOver]);
 
   useEffect(() => {
     const winner = checkWinner(board);

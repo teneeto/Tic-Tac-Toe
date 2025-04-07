@@ -1,15 +1,16 @@
 import { Stack } from 'expo-router';
 import { GameSettingsProvider } from '../../context/GameSettingsContext';
+import { COLORS } from '@/theme';
 
 export default function GameLayout() {
   return (
     <GameSettingsProvider>
       <Stack
         screenOptions={{
-          headerStyle: { backgroundColor: '#111' },
-          headerTintColor: '#fff',
+          headerStyle: { backgroundColor: COLORS.header },
+          headerTintColor: COLORS.white,
           headerTitleAlign: 'center',
-          contentStyle: { backgroundColor: '#f9f9f9' },
+          contentStyle: { backgroundColor: COLORS.background },
         }}
       >
         <Stack.Screen name="index" options={{ title: 'Start Game' }} />

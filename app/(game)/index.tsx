@@ -22,7 +22,7 @@ export default function StartScreen() {
   const handleStart = (userFirst: boolean) => {
     setMode(GameMode.Single);
     if (selectedDifficulty) setDifficulty(selectedDifficulty);
-    router.push({ pathname: '/game', params: { userFirst: String(userFirst) } });
+    router.push('/game');
   };
 
   const startMultiplayer = () => {
