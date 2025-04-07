@@ -15,5 +15,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['/dist/*'],
+  ignorePatterns: ['tsconfig.json', 'dist/*', 'build/*', 'coverage/*', 'scripts/*'],
 };
