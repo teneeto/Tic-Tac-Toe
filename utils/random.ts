@@ -1,7 +1,8 @@
-import { Player } from '@/types/game';
+import { type Player } from '@/types/game';
+import { getAvailableMoves } from './board';
 
 export function getRandomMove(board: (Player | null)[]) {
-  const empty = board.map((v, i) => (v === null ? i : null)).filter((i): i is number => i !== null);
+  const empty = getAvailableMoves(board);
 
   return empty[Math.floor(Math.random() * empty.length)];
 }

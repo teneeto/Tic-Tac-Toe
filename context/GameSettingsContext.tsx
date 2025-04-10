@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { DifficultyLevel, GameMode } from '@/types/game';
 import type { Difficulty, GameResult, Mode } from '@/types/game';
-import { DEFAULT_GRID_SIZE } from '@/constants';
+import { DEFAULT_GRID_SIZE, DEFAULT_WIN_LENGTH } from '@/constants';
 
 interface GameSettingsContextType {
   difficulty: Difficulty;
@@ -11,6 +11,7 @@ interface GameSettingsContextType {
   userFirst: boolean;
   result: GameResult | null;
   gridSize: number;
+  winLength: number;
   setUserFirst: (first: boolean) => void;
   setDifficulty: (d: Difficulty) => void;
   setMode: (m: Mode) => void;
@@ -18,6 +19,7 @@ interface GameSettingsContextType {
   setPlayerO: (name: string) => void;
   setResult: (r: GameResult | null) => void;
   setGridSize: (size: number) => void;
+  setWinLength: (size: number) => void;
 }
 
 const GameSettingsContext = createContext<GameSettingsContextType | undefined>(undefined);
@@ -30,6 +32,7 @@ export const GameSettingsProvider = ({ children }: { children: ReactNode }) => {
   const [userFirst, setUserFirst] = useState(true);
   const [result, setResult] = useState<GameResult | null>(null);
   const [gridSize, setGridSize] = useState<number>(DEFAULT_GRID_SIZE);
+  const [winLength, setWinLength] = useState<number>(DEFAULT_WIN_LENGTH);
 
   return (
     <GameSettingsContext.Provider
@@ -41,6 +44,7 @@ export const GameSettingsProvider = ({ children }: { children: ReactNode }) => {
         userFirst,
         result,
         gridSize,
+        winLength,
         setResult,
         setUserFirst,
         setDifficulty,
@@ -48,6 +52,7 @@ export const GameSettingsProvider = ({ children }: { children: ReactNode }) => {
         setPlayerX,
         setPlayerO,
         setGridSize,
+        setWinLength,
       }}
     >
       {children}

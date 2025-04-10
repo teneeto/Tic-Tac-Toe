@@ -1,4 +1,4 @@
-import { generateWinCombos } from '../winCombos';
+import { generateWinCombos } from '../board';
 
 describe('generateWinCombos', () => {
   it('should generate correct win combos for 3x3', () => {

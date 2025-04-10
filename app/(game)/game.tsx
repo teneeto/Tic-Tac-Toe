@@ -3,10 +3,9 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 
 import { getAiMove } from '@/utils/ai';
-import { checkWinner } from '@/utils/minmax';
 import TurnIndicator from '@/components/TurnIndicator';
 import { GameMode, GameResult, PlayerSymbol, type Player } from '@/types/game';
-import { applyMove, getNextPlayer, isValidMove } from '@/lib/gameEngine';
+import { applyMove, checkWinner, getNextPlayer, isValidMove } from '@/lib/gameEngine';
 import { useGameSettings } from '@/context/GameSettingsContext';
 import GridBoard from '@/components/GridBoard';
 import { useDelayedCallback } from '@/hooks/useDelayedCallback';
@@ -15,7 +14,7 @@ export default function GameScreen() {
   const { mode, difficulty, playerX, playerO, gridSize } = useGameSettings();
   const isMultiplayer = mode === GameMode.Multi;
 
-  const { userFirst, setResult } = useGameSettings();
+  const { userFirst, setResult, winLength } = useGameSettings();
   const [board, setBoard] = useState<(Player | null)[]>(Array(gridSize * gridSize).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState<Player>(
     userFirst ? PlayerSymbol.X : PlayerSymbol.O,
@@ -38,7 +37,7 @@ export default function GameScreen() {
 
   useDelayedCallback(
     () => {
-      const winner = checkWinner(board, gridSize);
+      const winner = checkWinner(board, gridSize, winLength);
       if (winner || !board.includes(null)) {
         setGameOver(true);
 
