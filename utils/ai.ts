@@ -14,6 +14,6 @@ export function getAiMove(
       return getBestMove(board, size, PlayerSymbol.O, 1.5);
     case DifficultyLevel.Hard:
     default:
-      return getBestMove(board, size, PlayerSymbol.O, 3);
+      return getBestMove(board, size, PlayerSymbol.O, 4);
   }
 }

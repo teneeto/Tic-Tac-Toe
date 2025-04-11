@@ -26,7 +26,7 @@ export default function RootLayout() {
   return (
     <>
       <Stack>
-        <Stack.Screen name="(game)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tab)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

@@ -11,7 +11,7 @@ import GridBoard from '@/components/GridBoard';
 import { useDelayedCallback } from '@/hooks/useDelayedCallback';
 
 export default function GameScreen() {
-  const { mode, difficulty, playerX, playerO, gridSize } = useGameSettings();
+  const { mode, difficulty, playerX, playerO, gridSize, addGameToHistory } = useGameSettings();
   const isMultiplayer = mode === GameMode.Multi;
 
   const { userFirst, setResult, winLength } = useGameSettings();
@@ -49,6 +49,13 @@ export default function GameScreen() {
               : GameResult.Tie;
 
         setResult(outcome);
+        addGameToHistory({
+          mode,
+          result: outcome,
+          playerX,
+          playerO,
+          date: new Date().toISOString(),
+        });
         router.replace('/result');
       }
     },
